@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.ysw.chapter02.pojos">
+	<class name="IdCard" table="IDCARD">
+		<!-- 主键 -->
+		<id name="id" column="ID">
+			<generator class="uuid.hex" />
+		</id>
+		<!-- 身份证编号 -->
+		<property name="cardNo" column="CARDNO" type="string"/>
+		<!-- 1-1关联 -->
+		<!-- property-ref 指定关联类的一个属性，该属性与本类的主属性相对应，【默认使用对方关联类的主键】 -->
+		<one-to-one name="customer" class="Customer" property-ref="idCard" constrained="true"/>
+	</class>
+</hibernate-mapping>

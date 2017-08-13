@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<!-- 指定struts2处于开发阶段，可以进行调试
+	-->
+	<constant name="struts.devMode" value="true"></constant>
+         <!--
+         namespace:定义package命名空间 该命名空间影响到url的地址，例如此命名空间为/test那么访问是的地址为http://localhost:8080/struts2/test/XX.action
+      -->
+    <package name="default" extends="struts-default" namespace="/">
+
+        <!-- Action配置 一个Action可以被多次映射(只要action配置中的name不同)
+              name：action名称
+              class: 对应的类的路径
+              method: 调用Action中的方法名
+        -->
+        <action name="login" class="com.ysw.chapter02.action.LoginAction">
+			<result name="ok">/ok.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/login.jsp</result>
+        </action>
+        <action name="user" class="com.ysw.chapter02.action.UserAction">
+			<result name="success">/result.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/input.jsp</result>
+        </action>
+        <action name="clicknum" class="com.ysw.chapter02.action.ClickNumAction">
+			<result name="success">/clickNum.jsp</result>
+        </action>
+        <action name="*product" class="com.ysw.chapter02.action.ProductAction" method="{1}">
+			<result name="{1}">/{1}.jsp</result>
+			
+        </action>
+        <action name="login4" class="com.ysw.chapter02.action.LoginAction4">
+			<result name="ok">/first.jsp</result>
+			<result name="error">/error.jsp</result>
+			<result name="input">/login.jsp</result>
+        </action>
+    </package>
+</struts>

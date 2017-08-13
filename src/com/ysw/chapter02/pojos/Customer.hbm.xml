@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.ysw.chapter02.pojos">
+	<class name="Customer" table="CUSTOMER">
+		<!-- 主键 -->
+		<id name="id" column="ID">
+			<generator class="uuid.hex" />
+		</id>
+		<!-- 用户名 -->
+		<property name="userName" column="USERNAME" type="string"
+			not-null="true" />
+		<!-- 密码 -->
+		<property name="pwd" column="PWD" type="string" not-null="true" />
+		<!-- 地址 -->
+		<property name="address" column="ADDRESS" type="string" />
+		<!-- 1-N关联关系 -->
+		<!-- inverse="true"控制反转 -->
+		<set name="orders" inverse="true" cascade="save-update">
+			<key column="CUSTOMER_ID"/>
+			<one-to-many class="Order"/>
+		</set>
+		<!-- 基于外键的1-1关联：增加many-to-one元素，并设置其unique属性值为true -->
+		
+		<many-to-one name="idCard" class="IdCard" cascade="all" column="IDCARD_ID" unique="true"/>
+	</class>
+
+</hibernate-mapping>
