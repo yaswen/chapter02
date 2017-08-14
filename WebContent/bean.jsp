@@ -14,5 +14,16 @@
 		id:<s:property value="id"/><br/>
 		No:<s:property value="cardNo"/><br/>
 	</s:bean>
+	<s:iterator var="num" begin="1" end="10" step="1">
+		<s:property value="#num"/>
+	</s:iterator>
+	<table border=0 width=200>
+		<s:iterator value="{'刘备','关羽','张飞','赵云','马超','诸葛亮'}" id="heroName" status="st">
+			<tr <s:if test="#st.odd"> style="background-color:#def7c2" </s:if>>
+				<td><s:property value="#st.count"/></td>
+				<td><s:property value="heroName"/></td>
+			</tr>
+		</s:iterator>
+	</table>
 </body>
 </html>

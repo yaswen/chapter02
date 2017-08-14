@@ -10,6 +10,8 @@
 <body>
 	<h1 align="center">包含</h1>
 	<div align="center">
+	<s:set name="score" value="78"/>
+	分数是：<s:property value="#score"/>
 	<s:include value="login.jsp"></s:include>
 	</div>
 	<div>

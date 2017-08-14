@@ -12,7 +12,7 @@
 登陆成功！欢迎用户${param.userName}！<br/>
 当前用户${session.CurUser}<br/>
 <a href="second.jsp">下一页</a>
-<s:property value="cardNo"></s:property>
+<s:property value="#score"/>
 </div>
 </body>
 </html>
