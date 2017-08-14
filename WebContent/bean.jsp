@@ -17,6 +17,7 @@
 	<s:iterator var="num" begin="1" end="10" step="1">
 		<s:property value="#num"/>
 	</s:iterator>
+	<div align="center">
 	<table border=0 width=200>
 		<s:iterator value="{'刘备','关羽','张飞','赵云','马超','诸葛亮'}" id="heroName" status="st">
 			<tr <s:if test="#st.odd"> style="background-color:#def7c2" </s:if>>
@@ -25,5 +26,6 @@
 			</tr>
 		</s:iterator>
 	</table>
+	</div>
 </body>
 </html>
