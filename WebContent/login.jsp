@@ -8,6 +8,7 @@
 <title>用户登录</title>
 </head>
 <body>
+<div align="center">
 	<form action="login4" method="post">
 		<table>
 			<tr>
@@ -24,5 +25,14 @@
 		</table>
 	</form>
 	<s:fielderror/>
+	<div>
+	<s:if test="'zhao' in {'zhao','gao'}">
+		在
+	</s:if>
+	<s:else>
+		不在
+	</s:else>
+	</div>
+</div>
 </body>
 </html>

@@ -7,9 +7,10 @@
 <title>显示用户信息</title>
 </head>
 <body>
+<div align="center">
 请求中的用户信息：${param.userName}！<br/>
 Session中的用户信息：${session.CurUser}<br/>
 <a href="first.jsp">上一页</a>
-
+</div>
 </body>
 </html>
