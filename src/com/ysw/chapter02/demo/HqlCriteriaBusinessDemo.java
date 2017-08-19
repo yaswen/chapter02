@@ -19,12 +19,15 @@ public class HqlCriteriaBusinessDemo {
 		//第二页，每页三条记录：
 		//List<Customer> list=listPageCustomer_HQL(1,3);
 		//List<Customer> list=listPageCustomer_QBC(2,3);
-//		for (Customer c:list){
-//			System.out.println(c.getId()+"\t"+c.getUserName());
-//		}
+
 		//Customer c=findOneCustomer_HQL();
-		Customer c=findOneCustomer_QBC();
-		System.out.println(c.getId()+"\t"+c.getUserName()+"\t"+c.getIdCard().getCardNo());
+		//Customer c=findOneCustomer_QBC();
+		//System.out.println(c.getId()+"\t"+c.getUserName()+"\t"+c.getIdCard().getCardNo());
+		//List<Customer> list=findCustomersByName1("Mary");
+		List<Customer> list=findCustomersByName2("Mary");
+		for (Customer c:list){
+			System.out.println(c.getId()+"\t"+c.getUserName());
+		}
 	}
 	/*使用HQL检索根据地址查询Customer*/
 	public static void findCustomerByAddress_HQL(String address){
@@ -125,5 +128,23 @@ public class HqlCriteriaBusinessDemo {
 				.setMaxResults(1)
 				.uniqueResult();
 		return customer;
+	}
+	public static List<Customer> findCustomersByName1(String name){
+		//获取Session对象
+		Session session = HibernateUtils.getSession();
+		//创建HQL
+		String hql="from Customer as c where c.userName = :name";
+		Query query=session.createQuery(hql);
+		//按照参数名字进行绑定
+		query.setString("name",name);
+		return query.list();
+	}
+	public static List<Customer> findCustomersByName2(String name){
+		Session session=HibernateUtils.getSession();
+		String hql="from Customer as c where c.userName = ?";
+		Query query=session.createQuery(hql);
+		//按照参数位置进行绑定
+		query.setString(0, name);
+		return query.list();
 	}
 }
