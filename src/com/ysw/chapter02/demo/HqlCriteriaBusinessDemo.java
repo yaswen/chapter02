@@ -1,5 +1,7 @@
 package com.ysw.chapter02.demo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -8,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import com.ysw.chapter02.pojos.Customer;
+import com.ysw.chapter02.pojos.Order;
 import com.ysw.chapter02.util.HibernateUtils;
 
 public class HqlCriteriaBusinessDemo {
@@ -28,6 +31,9 @@ public class HqlCriteriaBusinessDemo {
 		for (Customer c:list){
 			System.out.println(c.getId()+"\t"+c.getUserName());
 		}
+		printOrder_HQL();
+		printOrder_QBC();
+		printCustomer_HQL();
 	}
 	/*使用HQL检索根据地址查询Customer*/
 	public static void findCustomerByAddress_HQL(String address){
@@ -146,5 +152,52 @@ public class HqlCriteriaBusinessDemo {
 		//按照参数位置进行绑定
 		query.setString(0, name);
 		return query.list();
+	}
+	public static void printOrder_HQL(){
+		Session session=HibernateUtils.getSession();
+		//HQL检索日期在指定范围之内
+		String hql="from Order o where o.date between ? and ?";
+		//创建一个日期格式类，用于格式化日期
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try{
+			List<Order> list = session.createQuery(hql)
+					.setParameter(0, dateFormat.parse("2017-08-01 00:00:00"))
+					.setParameter(1, dateFormat.parse("2017-08-10 23:59:59"))
+					.list();
+			//打印结果
+			for(Order o:list){
+				System.out.println(o.getId()+"\t"+o.getDate());
+			}
+		}catch(ParseException e){
+			e.printStackTrace();
+		}
+	}
+	public static void printOrder_QBC(){
+		Session session=HibernateUtils.getSession();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try{
+			List<Order> list=session
+					.createCriteria(Order.class)
+					.add(Restrictions.between("date", 
+							dateFormat.parse("2017-07-01 00:00:00"),
+							dateFormat.parse("2017-07-31 23:59:59")))
+					.list();
+			for(Order o:list){
+				System.out.println(o.getId()+"\t"+o.getDate());
+			}
+		}catch(ParseException e){
+			e.printStackTrace();
+		}
+	}
+	//比较运算
+	public static void printCustomer_HQL(){
+		Session session=HibernateUtils.getSession();
+		String hql="from Customer c where c.address ='嵊泗'";
+			List<Customer> list = session.createQuery(hql).list();
+			//打印结果
+			for(Customer c:list){
+				System.out.println(c.getId()+"\t"+c.getUserName());
+
+			}
 	}
 }
