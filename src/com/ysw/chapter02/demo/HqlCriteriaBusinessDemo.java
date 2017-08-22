@@ -27,13 +27,14 @@ public class HqlCriteriaBusinessDemo {
 		//Customer c=findOneCustomer_QBC();
 		//System.out.println(c.getId()+"\t"+c.getUserName()+"\t"+c.getIdCard().getCardNo());
 		//List<Customer> list=findCustomersByName1("Mary");
-		List<Customer> list=findCustomersByName2("Mary");
-		for (Customer c:list){
-			System.out.println(c.getId()+"\t"+c.getUserName());
-		}
-		printOrder_HQL();
-		printOrder_QBC();
-		printCustomer_HQL();
+//		List<Customer> list=findCustomersByName2("Mary");
+//		for (Customer c:list){
+//			System.out.println(c.getId()+"\t"+c.getUserName());
+//		}
+//		printOrder_HQL();
+//		printOrder_QBC();
+//		printCustomer_HQL();
+		findCustomerByJoin();
 	}
 	/*使用HQL检索根据地址查询Customer*/
 	public static void findCustomerByAddress_HQL(String address){
@@ -199,5 +200,24 @@ public class HqlCriteriaBusinessDemo {
 				System.out.println(c.getId()+"\t"+c.getUserName());
 
 			}
+	}
+	//HQL内连接
+	public static void findCustomerByJoin(){
+		Session session=HibernateUtils.getSession();
+		String hql="from Customer c inner join c.orders o where c.userName like :name";
+		Query query=session.createQuery(hql);
+		query.setString("name", "M%");
+		List<Object[ ]> list=query.list();
+		for(Object[ ] objs:list){
+			Customer customer=(Customer)objs[0];
+			System.out.print(customer.getId()+"*"+customer.getUserName()+"*");
+			Order order=(Order) objs[1];
+			System.out.print(order.getOrderNo()+"*");
+			System.out.print(order.getDate());
+			System.out.println();
+		}
+	//通过内连接的方式将Query对象的list()方法返回的集合中包含的满足条件的元素在控制台上输出，
+	//且每个元素对应查询结果中的一条记录，每个元素都是Object[ ]类型，并且其长度为2，
+	//实际上每个Object[ ]数组中都存放了一对Customer和Order对象。
 	}
 }
