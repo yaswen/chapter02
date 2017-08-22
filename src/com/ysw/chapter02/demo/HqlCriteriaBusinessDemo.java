@@ -204,6 +204,7 @@ public class HqlCriteriaBusinessDemo {
 	//HQL内连接
 	public static void findCustomerByJoin(){
 		Session session=HibernateUtils.getSession();
+		//使用HQL进行内连接
 		String hql="from Customer c inner join c.orders o where c.userName like :name";
 		Query query=session.createQuery(hql);
 		query.setString("name", "M%");
