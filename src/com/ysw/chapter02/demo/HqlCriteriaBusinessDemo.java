@@ -2,7 +2,9 @@ package com.ysw.chapter02.demo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -34,7 +36,9 @@ public class HqlCriteriaBusinessDemo {
 //		printOrder_HQL();
 //		printOrder_QBC();
 //		printCustomer_HQL();
-		findCustomerByJoin();
+//		findCustomerByJoin();
+//		findCustomerByFetchJoin();
+		findCustomerByLeftJoin();
 	}
 	/*使用HQL检索根据地址查询Customer*/
 	public static void findCustomerByAddress_HQL(String address){
@@ -221,4 +225,39 @@ public class HqlCriteriaBusinessDemo {
 	//且每个元素对应查询结果中的一条记录，每个元素都是Object[ ]类型，并且其长度为2，
 	//实际上每个Object[ ]数组中都存放了一对Customer和Order对象。
 	}
+	public static void findCustomerByFetchJoin(){
+		Session session=HibernateUtils.getSession();
+		String hql = "from Customer c inner join fetch c.orders o where c.userName like :name";
+		Query query=session.createQuery(hql);
+		query.setString("name", "s%");
+		List<Customer> list = query.list();
+		//使用HashSet过滤重复元素
+		Set<Customer> set=new HashSet<Customer>(list);
+		for(Customer customer:set){
+			System.out.print(customer.getId()+" "+customer.getUserName()+" ");
+			for(Order order:customer.getOrders()){
+				System.out.print(order.getOrderNo()+" ");
+			}
+			System.out.println();
+			
+		}
+	}
+	public static void findCustomerByLeftJoin(){
+		Session session=HibernateUtils.getSession();
+		String hql="from Customer c left outer join c.orders o where c.address = ?";
+		Query query=session.createQuery(hql);
+		query.setString(0,"青岛市");
+		List<Object[ ]> list = query.list();
+		for(Object[ ] objs:list){
+			Customer customer=(Customer) objs[0];
+			System.out.print(customer.getId()+" "+customer.getUserName()+" ");
+			Order order=(Order)objs[1];
+			if(objs[1]!=null)
+				System.out.print(order.getOrderNo());
+			System.out.println();
+		}
+	}
+	
+	
+	
 }
