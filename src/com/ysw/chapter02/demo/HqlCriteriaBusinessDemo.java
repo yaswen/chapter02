@@ -9,6 +9,8 @@ import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.ysw.chapter02.pojos.Customer;
@@ -38,7 +40,9 @@ public class HqlCriteriaBusinessDemo {
 //		printCustomer_HQL();
 //		findCustomerByJoin();
 //		findCustomerByFetchJoin();
-		findCustomerByLeftJoin();
+//		findCustomerByLeftJoin();
+		//groupByCustomer();
+		groupByCriteria();
 	}
 	/*使用HQL检索根据地址查询Customer*/
 	public static void findCustomerByAddress_HQL(String address){
@@ -258,6 +262,29 @@ public class HqlCriteriaBusinessDemo {
 		}
 	}
 	
-	
-	
+	public static void groupByCustomer(){
+		Session session=HibernateUtils.getSession();
+		//group by c.userName是依据userName分组，having count(o)>=2是统计订单数目大于等于2的顾客。left join左外连接，inner join内连接
+		String hql="select c.userName,count(o) from Customer c left join c.orders o group by c.userName having count(o)>=2";
+		Query query=session.createQuery(hql);
+		List<Object[ ]> list=query.list();
+		for(Object[ ] objs:list){
+			String username=(String)objs[0];
+			Long count=(Long)objs[1];
+			System.out.println("用户名： "+username+"\t订单数： "+count);
+		}
+	}
+	public static void groupByCriteria(){
+		Session session=HibernateUtils.getSession();
+		Criteria criteria=session.createCriteria(Customer.class);
+		ProjectionList p=Projections.projectionList();
+		p.add(Projections.groupProperty("userName").as("u"));
+		p.add(Projections.rowCount());
+		criteria.setProjection(p);
+		criteria.addOrder(org.hibernate.criterion.Order.desc("u"));
+		List<Object[ ]> list=criteria.list();
+		for(Object[ ] objs:list){
+			System.out.println("用户名： "+objs[0]+"\t个数："+objs[1]);
+		}
+	}
 }
