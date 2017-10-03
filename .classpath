@@ -15,5 +15,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Struts2-core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Oracle-JDBC"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/oracle-jdbc"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/struts-core"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

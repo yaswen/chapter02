@@ -4,9 +4,12 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.ysw.chapter02.pojos">
 	<class name="Order" table="ORDERS">
+		<!-- 主键 -->
 		<id name="id" column="ID">
 			<generator class="uuid.hex"/>
 		</id>
+		
+		
 		<!-- 订单编号 -->
 		<property name="orderNo" column="ORDERNO" type="string"/>
 		<!-- 下单日期:yyyy-MM-dd HH:MM:SS -->
